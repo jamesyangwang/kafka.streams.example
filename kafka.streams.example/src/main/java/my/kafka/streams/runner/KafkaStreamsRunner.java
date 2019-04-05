@@ -22,8 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class KafkaStreamsRunner implements CommandLineRunner {
 
-//https://docs.spring.io/spring-kafka/docs/current/reference/#kafka-streams
-
 	private Topology createTopology() {
 		
 		log.info("Building output stream...");
