@@ -1,13 +1,16 @@
 #!/bin/bash
 
+cd $KAFKA_HOME/bin
+
 # create input topic with two partitions
-bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 2 --topic word-count-input
+# $ZK = localhost.digicert.com
+kafka-topics.sh --create --zookeeper $ZK --replication-factor 3 --partitions 3 --topic word-count-input
 
 # create output topic
-bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 2 --topic word-count-output
+kafka-topics.sh --create --zookeeper $ZK --replication-factor 3 --partitions 3 --topic word-count-output
 
 # launch a Kafka consumer
-bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 \
+kafka-console-consumer.sh --bootstrap-server localhost.digicert.com:32771 \
     --topic word-count-output \
     --from-beginning \
     --formatter kafka.tools.DefaultMessageFormatter \
@@ -19,7 +22,7 @@ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 \
 # launch the streams application
 
 # then produce data to it
-bin/kafka-console-producer.sh --broker-list localhost:9092 --topic word-count-input
+kafka-console-producer.sh --broker-list localhost.digicert.com:32771 --topic word-count-input
 
 # package your application as a fat jar
 mvn clean package
@@ -28,4 +31,4 @@ mvn clean package
 java -jar <your jar here>.jar
 
 # list all topics that we have in Kafka (so we can observe the internal topics)
-bin/kafka-topics.sh --list --zookeeper localhost:2181
+kafka-topics.sh --list --zookeeper localhost.digicert.com:2181
